@@ -339,6 +339,7 @@ int write_bmp(const char* output_file, Image* img)
     return 1;
 }
 
+
 Image apply_core(Image* img, Core* core)
 {
 	int width = img->width;
@@ -414,6 +415,7 @@ Image apply_core(Image* img, Core* core)
 	}
 	return result;
 }
+
 
 Core* create_sharp_x_core()
 {
@@ -497,6 +499,7 @@ Core* create_edge_x_core()   //функция применения фильра 
     
     return Core;
 }
+
 
 Core* create_gauss_x_core() //функция применения размытия гаусса
 {

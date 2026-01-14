@@ -5,6 +5,33 @@
 #ifndef LABA3_FILTERS_H
 #define LABA3_FILTERS_H
 
-Image* Negro;
+typedef struct
+{
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+} Pixel;
+
+// Изображение
+typedef struct
+{
+	int width;   // количество столбцов (x)
+	int height;  // количество строк (y)
+	Pixel** pixels;  // pixels[y][x] — доступ к пикселю
+	Pixel* data;     // указатель на единый блок памяти (для освобождения)
+} Image;
+
+typedef struct
+{
+	float** core;  // матрица ядра
+	int size;        // размер ядра (обычно 3, 5, 7...)
+	float divisor;   // делитель для нормализации
+} Core;
+
+Image Crop(Image* img, int width, int height);
+Image* Grey(Image* img);
+Image* Negro(Image* img);
+Image* Sharp(Image* img);
+
 
 #endif //LABA3_FILTERS_H
