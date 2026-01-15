@@ -546,3 +546,70 @@ Core* create_gauss_x_core() //функция применения размыти
     return Core;
 }
 
+int** create_matrix(n) {
+    int **matrix = (int**)malloc(n * sizeof(int*));
+    if (matrix == NULL) {
+        printf("Ошибка выделения памяти!\n");
+        return NULL;
+    }
+    
+    for (int i = 0; i < n; i++) {
+        matrix[i] = (int*)malloc(n * sizeof(int));
+        if (matrix[i] == NULL) {
+            printf("Ошибка выделения памяти для строки %d!\n", i);
+            // Освобождаем уже выделенную память
+            for (int j = 0; j < i; j++) {
+                free(matrix[j]);
+            }
+            free(matrix);
+            return NULL;
+        }
+    }
+    
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix[i][j] = 0;
+        }
+    }
+}
+
+
+
+void sort_matrix(int **matrix, int n) {
+    if (matrix == NULL || n <= 0) return;
+    
+    int total = n * n;
+    
+    // Шаг 1: Копируем матрицу в линейный массив
+    int *linear = (int*)malloc(total * sizeof(int));
+    if (linear == NULL) return;
+    
+    int index = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            linear[index++] = matrix[i][j];
+        }
+    }
+    
+    // Шаг 2: Сортируем линейный массив
+    for (int i = 0; i < total - 1; i++) {
+        for (int j = 0; j < total - 1 - i; j++) {
+            if (linear[j] > linear[j + 1]) {
+                int temp = linear[j];
+                linear[j] = linear[j + 1];
+                linear[j + 1] = temp;
+            }
+        }
+    }
+    
+    // Шаг 3: Копируем отсортированные значения обратно в матрицу
+    index = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix[i][j] = linear[index++];
+        }
+    }
+    
+    free(linear);
+}

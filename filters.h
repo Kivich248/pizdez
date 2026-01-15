@@ -32,6 +32,6 @@ Image Crop(Image* img, int width, int height);
 Image* Grey(Image* img);
 Image* Negro(Image* img);
 Image* Sharp(Image* img);
-
+Image* Median(Image* img, int window);
 
 #endif //LABA3_FILTERS_H
