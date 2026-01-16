@@ -29,7 +29,7 @@ int write_bmp(const char* output_file, Image* img);
 Image apply_core(Image* img, Core* core);
 Core* create_sharp_x_core();
 Core* create_edge_x_core();
-Core* create_gauss_x_core();
+Core* create_gauss_x_core(float sigma);
 int** create_matrix(n);
 void sort_matrix(int **matrix, int n);
 
