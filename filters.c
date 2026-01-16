@@ -30,7 +30,7 @@ typedef struct
 } Core;
 
 
-Image Crop(Image* img, int width, int height)
+Image* Crop(Image* img, int width, int height)
 {
 	Image* img_return = create_image(width, height);
 	for (int y = 0; y < height; y++)
