@@ -187,7 +187,11 @@ Image* Median(Image* img, int window) {				//медианный фильтр
 			result->pixels[y][x].r = r;
 			result->pixels[y][x].g = g;
 			result->pixels[y][x].b = b;
-			for (int i = 0; i < window; i++) {
+			
+
+		}
+	}
+	for (int i = 0; i < window; i++) {
     free(mat_r[i]);
     free(mat_g[i]);
     free(mat_b[i]);
@@ -195,9 +199,6 @@ Image* Median(Image* img, int window) {				//медианный фильтр
 free(mat_r);
 free(mat_g);
 free(mat_b);
-
-		}
-	}
 	return result;
 }
 
@@ -207,4 +208,127 @@ Image* Gaussian_Blur(Image* img, float sigma)
 	Core* gauss_core = create_gauss_x_core(sigma);
 	Image* img_return = apply_core(img, gauss_core);
 	return img_return;
+}
+
+
+
+
+
+// Фильтр точечной мозаики
+Image* Pixelate(Image* img, int block_size)
+{
+    if (img == NULL || block_size <= 1) return NULL;
+    
+    int width = img->width;
+    int height = img->height;
+    
+    Image* result = create_image(width, height);
+    if (result == NULL) return NULL;
+    
+    // Проходим по блокам размером block_size x block_size
+    for (int block_y = 0; block_y < height; block_y += block_size)
+    {
+        for (int block_x = 0; block_x < width; block_x += block_size)
+        {
+            // Определяем границы текущего блока
+            int block_end_y = (block_y + block_size < height) ? 
+                              block_y + block_size : height;
+            int block_end_x = (block_x + block_size < width) ? 
+                              block_x + block_size : width;
+            
+            // Считаем средний цвет в блоке
+            unsigned long long sum_r = 0, sum_g = 0, sum_b = 0;
+            int pixel_count = 0;
+            
+            for (int y = block_y; y < block_end_y; y++)
+            {
+                for (int x = block_x; x < block_end_x; x++)
+                {
+                    sum_r += img->pixels[y][x].r;
+                    sum_g += img->pixels[y][x].g;
+                    sum_b += img->pixels[y][x].b;
+                    pixel_count++;
+                }
+            }
+            
+            // Вычисляем средние значения
+            uint8_t avg_r = (uint8_t)(sum_r / pixel_count);
+            uint8_t avg_g = (uint8_t)(sum_g / pixel_count);
+            uint8_t avg_b = (uint8_t)(sum_b / pixel_count);
+            
+            // Заполняем блок средним цветом
+            for (int y = block_y; y < block_end_y; y++)
+            {
+                for (int x = block_x; x < block_end_x; x++)
+                {
+                    result->pixels[y][x].r = avg_r;
+                    result->pixels[y][x].g = avg_g;
+                    result->pixels[y][x].b = avg_b;
+                }
+            }
+        }
+    }
+    
+    return result;
+}
+
+// Фильтр сепии с регулируемой интенсивностью
+Image* Sepia(Image* img, float intensity)
+{
+    if (img == NULL) return NULL;
+    
+    // Ограничиваем интенсивность от 0.0 до 1.0
+    if (intensity < 0.0f) intensity = 0.0f;
+    if (intensity > 1.0f) intensity = 1.0f;
+    
+    int width = img->width;
+    int height = img->height;
+    
+    // Создаем копию изображения для результата
+    Image* result = create_image(width, height);
+    if (result == NULL) return NULL;
+    
+    // Стандартные коэффициенты для сепии
+    const float sepia_r = 0.393f;
+    const float sepia_g = 0.769f;
+    const float sepia_b = 0.189f;
+    
+    const float sepia_r2 = 0.349f;
+    const float sepia_g2 = 0.686f;
+    const float sepia_b2 = 0.168f;
+    
+    const float sepia_r3 = 0.272f;
+    const float sepia_g3 = 0.534f;
+    const float sepia_b3 = 0.131f;
+    
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            uint8_t r = img->pixels[y][x].r;
+            uint8_t g = img->pixels[y][x].g;
+            uint8_t b = img->pixels[y][x].b;
+            
+            // Вычисляем оттенок сепии
+            float new_r = (r * sepia_r + g * sepia_g + b * sepia_b);
+            float new_g = (r * sepia_r2 + g * sepia_g2 + b * sepia_b2);
+            float new_b = (r * sepia_r3 + g * sepia_g3 + b * sepia_b3);
+            
+            // Интерполируем между оригиналом и сепией в зависимости от интенсивности
+            new_r = r * (1.0f - intensity) + new_r * intensity;
+            new_g = g * (1.0f - intensity) + new_g * intensity;
+            new_b = b * (1.0f - intensity) + new_b * intensity;
+            
+            // Ограничиваем значения и предотвращаем переполнение
+            if (new_r > 255.0f) new_r = 255.0f;
+            if (new_g > 255.0f) new_g = 255.0f;
+            if (new_b > 255.0f) new_b = 255.0f;
+            
+            result->pixels[y][x].r = (uint8_t)new_r;
+            result->pixels[y][x].g = (uint8_t)new_g;
+            result->pixels[y][x].b = (uint8_t)new_b;
+        }
+    }
+    
+    return result;
 }

@@ -107,6 +107,41 @@ int main(int argc, char *argv[])
             i = i + 2;
             continue;
         }
+        if (strcmp(argv[i], "-pixelate") == 0 && argc > i+1 && is_valid_number(argv[i+1]))
+    {
+        int block_size = atoi(argv[i+1]);
+        if (block_size < 2) {
+            printf("Размер блока для -pixelate должен быть >= 2\n");
+            return 1;
+        }
+        img_got = Pixelate(img, block_size);
+        i = i + 2;
+        continue;
+    }
+    
+    if (strcmp(argv[i], "-sepia") == 0)
+    {
+        float intensity = 1.0f; // Значение по умолчанию
+        if (argc > i+1 && is_valid_number(argv[i+1]))
+        {
+            intensity = string_to_float(argv[i+1]);
+            i = i + 2;
+        }
+        else
+        {
+            i = i + 1;
+        }
+        
+        // Проверяем корректность интенсивности
+        if (intensity < 0.0f || intensity > 1.0f)
+        {
+            printf("Интенсивность сепии должна быть от 0.0 до 1.0\n");
+            return 1;
+        }
+        
+        img_got = Sepia(img, intensity);
+        continue;
+    }
         printf("введи правильную команду\n");
         return 1;
     }
