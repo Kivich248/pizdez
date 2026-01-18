@@ -1,7 +1,7 @@
 #ifndef LABA3_FUNCTIONS_H
 #define LABA3_FUNCTIONS_H
-#include <ctype.h>
 #include <stdbool.h>
+// Пиксель: RGB, каждый компонент — uint8_t (0..255)
 typedef struct {
 	uint8_t r;
 	uint8_t g;

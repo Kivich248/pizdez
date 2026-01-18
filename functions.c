@@ -6,28 +6,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <tgmath.h>
-
-// Пиксель: RGB, каждый компонент — uint8_t (0..255)
-typedef struct {
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
-} Pixel;
-
-// Изображение
-typedef struct {
-	int width;   // количество столбцов (x)
-	int height;  // количество строк (y)
-	Pixel** pixels;  // pixels[y][x] — доступ к пикселю
-} Image;
-
-typedef struct
-{
-	float** core;  // матрица ядра
-	int size;        // размер ядра (обычно 3, 5, 7...)
-	float divisor;   // делитель для нормализации
-} Core;
-
+#include <math.h>
 Image* create_image(int width, int height)
 {
 	if (width <= 0 || height <= 0)
@@ -509,7 +488,9 @@ Core* create_gauss_x_core(float sigma)
     Core* kernel = malloc(sizeof(Core));
     if (kernel == NULL) return NULL;
 
-    kernel->size = 7;
+	int p = (int)ceil(sigma);
+
+    kernel->size = 2 * p + 1;
     kernel->divisor = 0.0f;
 
     

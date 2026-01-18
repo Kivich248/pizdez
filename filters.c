@@ -3,32 +3,7 @@
 #include <stdint.h>
 #include "filters.h"
 #include "functions.h"
-
-#include <math.h>
-
-// Пиксель: RGB, каждый компонент — uint8_t (0..255)
-typedef struct
-{
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
-} Pixel;
-
-// Изображение
-typedef struct
-{
-	int width;   // количество столбцов (x)
-	int height;  // количество строк (y)
-	Pixel** pixels;  // pixels[y][x] — доступ к пикселю
-} Image;
-
-typedef struct
-{
-	float** core;  // матрица ядра
-	int size;        // размер ядра (обычно 3, 5, 7...)
-	float divisor;   // делитель для нормализации
-} Core;
-
+#include <tgmath.h>
 
 Image* Crop(Image* img, int width, int height)
 {
