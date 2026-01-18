@@ -9,11 +9,11 @@
 // -gs
 // -neg
 // -sharp
-// -edge число, float любые, имеет смысл от 0 до 1, но можно любые
+// -edge число, float от 0 до 1
 // -med число, int положительные, тесты с 9 уже долгие, дальше на СВОй страх и риск
 // -blur число, float полож, размер ядра считается как 2*[sigma*3] + 1, поэтому больше 10 не советую применять
-// -pixelate число
-// -sepia можно с и без числа
+// -pixelate число, int >= 2
+// -sepia можно с и без числа, с числом float от 0 до 1
 int main(int argc, char *argv[])
 {
     if (argc < 3) {
@@ -81,6 +81,11 @@ int main(int argc, char *argv[])
         if (strcmp(argv[i], "-edge") == 0 && argc > i && is_valid_number(argv[i+1]))
         {
             float threshold = string_to_float(argv[i+1]);
+            if (threshold < 0.0f || threshold > 1.0f)
+            {
+                printf("Threshold в edge должен быть от 0.0 до 1.0\n");
+                return 1;
+            }
             img_got = Edge(img, threshold);
             i = i + 2;
             continue;

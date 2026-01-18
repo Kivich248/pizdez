@@ -7,6 +7,21 @@
 
 Image* Crop(Image* img, int width, int height)
 {
+	int width_x = img->width;
+	int height_x = img->height;
+	if (width > width_x && height > height_x)
+	{
+		width = width_x;
+		height = height_x;
+	}
+	if (width > width_x && height <= height_x)
+	{
+		width = width_x;
+	}
+	if (width <= width_x && height > height_x)
+	{
+		height = height_x;
+	}
 	Image* img_return = create_image(width, height);
 	for (int y = 0; y < height; y++)
 	{
@@ -89,7 +104,7 @@ Image* Edge(Image* img, float threshold)
 				img_return->pixels[y][x].g = 255;
 				img_return->pixels[y][x].b = 255;
 			}
-			if (gray - threshold * 255 < 0)
+			if (gray - threshold * 255 <= 0)
 			{
 				img_return->pixels[y][x].r = 0;
 				img_return->pixels[y][x].g = 0;
@@ -184,10 +199,6 @@ Image* Gaussian_Blur(Image* img, float sigma)
 	Image* img_return = apply_core(img, gauss_core);
 	return img_return;
 }
-
-
-
-
 
 // Фильтр точечной мозаики
 Image* Pixelate(Image* img, int block_size)
