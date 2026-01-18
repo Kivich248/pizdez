@@ -13,7 +13,6 @@ typedef struct {
 	int width;   // количество столбцов (x)
 	int height;  // количество строк (y)
 	Pixel** pixels;  // pixels[y][x] — доступ к пикселю
-	Pixel* data;     // указатель на единый блок памяти (для освобождения)
 } Image;
 
 typedef struct

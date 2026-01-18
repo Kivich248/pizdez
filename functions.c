@@ -7,6 +7,8 @@
 #include <stdbool.h>
 #include <tgmath.h>
 #include <math.h>
+
+//создание картинки пустой
 Image* create_image(int width, int height)
 {
 	if (width <= 0 || height <= 0)
@@ -50,7 +52,7 @@ Image* create_image(int width, int height)
 	return img;
 }
 
-
+//вау проработано освобождение памяти(маша настояла)
 void destroy_image(Image* img)
 {
 	if (img != NULL)
@@ -67,7 +69,7 @@ void destroy_image(Image* img)
 	}
 }
 
-
+//учимся читать заголовочные данные и саму картинку with god help
 Image* read_bmp(const char* input_file)
 {
     if (input_file == NULL)
@@ -197,7 +199,7 @@ Image* read_bmp(const char* input_file)
     return img;
 }
 
-
+//научились писать
 int write_bmp(const char* output_file, Image* img)
 {
     if (output_file == NULL || img == NULL)
@@ -321,7 +323,7 @@ int write_bmp(const char* output_file, Image* img)
     return 1;
 }
 
-
+//применяем ядро размера n на картинку
 Image* apply_core(Image* img, Core* core)
 {
 	int width = img->width;
@@ -398,7 +400,7 @@ Image* apply_core(Image* img, Core* core)
 	return result;
 }
 
-
+//создание sharp ядра
 Core* create_sharp_x_core()
 {
 	Core* core = malloc(sizeof(Core));
@@ -440,7 +442,7 @@ Core* create_sharp_x_core()
 	return core;
 }
 
-
+//создание edge ядра
 Core* create_edge_x_core()
 {
     Core* kernel = malloc(sizeof(Core));
@@ -482,7 +484,7 @@ Core* create_edge_x_core()
     return kernel;
 }
 
-
+//создание gauss ядра
 Core* create_gauss_x_core(float sigma)
 {
     Core* kernel = malloc(sizeof(Core));
@@ -532,8 +534,7 @@ Core* create_gauss_x_core(float sigma)
     return kernel;
 }
 
-
-
+//эмммм я хз это писала маша но она уже спит и я уже хочу спать а не ебашить эти комменты
 int** create_matrix(int n) {
     int **matrix = (int**)malloc(n * sizeof(int*));
     if (matrix == NULL) {
@@ -564,7 +565,7 @@ int** create_matrix(int n) {
 }
 
 
-
+//аналогично
 void sort_matrix(int **matrix, int n) {
     if (matrix == NULL || n <= 0) return;
     
@@ -604,7 +605,7 @@ void sort_matrix(int **matrix, int n) {
     
 }
 
-
+//число ли(и флоат и интежер)
 bool is_valid_number(const char *str)
 {
 	if (!str || *str == '\0')
@@ -648,6 +649,8 @@ bool is_valid_number(const char *str)
 	return has_digits; // Должна быть хотя бы одна цифра
 }
 
+
+//строка в флоат
 float string_to_float(const char *str)
 {
 	if (!str || !is_valid_number(str)) { // Предполагается, что is_valid_number объявлена выше
@@ -687,7 +690,7 @@ float string_to_float(const char *str)
 }
 
 
-
+//инт ли
 int is_valid_integer(const char *str) {         //реально интеджер ввели?
     if (str == NULL || *str == '\0') {
         return 0;

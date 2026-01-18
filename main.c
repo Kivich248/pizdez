@@ -16,28 +16,39 @@
 // -sepia можно с и без числа, с числом float от 0 до 1
 int main(int argc, char *argv[])
 {
-    if (argc < 3) {
-        printf("ты идиот?\n");
-
+    if (argc < 3)
+    {
+        printf(".\\cmake-build-debug\\laba3.exe mountains.bmp res.bmp - путь до файла лабы + пример инпута и оутпута\n");
+        printf("Функции с описанием:\n");
+        printf("-crop int int, положительные. Отрезает кусок от верхнего левого угла изображения;\n");
+        printf("-gs. Делает изображение серым через классическую формулу.\n");
+        printf("-neg. Фильтр негатива.\n");
+        printf("-sharp. Применение матрицы с 5 в центре и с -1 по сторонам от 5. Обостряет картинку.\n");
+        printf("-edge float, число от 0 до 1. Выделяет границы через перепад цвета.\n");
+        printf("-med int. Размывает каждый пиксель равномерно.\n");
+        printf("-blur float. Размывает пиксель по динамическому ядру с помощью формулы.\n");
+        printf("-pixelate int, число >= 2. Условно ухудшаем качество изображения, шакаля его.\n");
+        printf("-sepia float, число от 0 до 1. Можно с числом или без. По умолчанию 1. Коричневит фото.\n");
         return 1;
     }
 
-    const char *input_file = argv[1];
+    const char *input_file = argv[1];               //оп оп завезли название файлов
     const char *output_file = argv[2];
 
-    Image* img = read_bmp(input_file);
+    Image* img = read_bmp(input_file);              //оп оп прочитали и проработали ошибку
     if (img == NULL)
     {
-        printf("печально\n");
+        printf("Файл инпута не был прочитан, read_bmp\n");
         return 1;
     }
 
+    //3 аргумента = отсутствие фильтров
     if (argc == 3)
     {
         int result = write_bmp(output_file, img);
         if (!result)
         {
-            printf("грустно'\n", output_file);
+            printf("Как....'\n");
             destroy_image(img);
             return 1;
         }
@@ -45,11 +56,12 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-	int width = img->width;
+	int width = img->width;                         //удобно
 	int height = img->height;
 
-	Image* img_got = create_image(width, height);
+	Image* img_got = create_image(width, height);   //пустое изображение для реза
     int i = 3;
+    //в цикле проверяем разные условия совпадение с названием функций, если она требует число, требуем проверки существования след элемента и то, число ли оно
     while (i < argc)
     {
         if (strcmp(argv[i], "-crop") == 0 && argc > i+1 && is_valid_integer(argv[i+1]) && is_valid_integer(argv[i+2]))
@@ -139,7 +151,7 @@ int main(int argc, char *argv[])
             img_got = Sepia(img, intensity);
             continue;
         }
-        printf("введи правильную команду\n");
+        printf("Введи правильную команду. Аргумент номер %i\n", i);
         return 1;
     }
     write_bmp(argv[2], img_got);

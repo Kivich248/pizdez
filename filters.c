@@ -5,6 +5,8 @@
 #include "functions.h"
 #include <tgmath.h>
 
+
+//ебашим обрезку, ифы для проверки размеров обрезки и картинки
 Image* Crop(Image* img, int width, int height)
 {
 	int width_x = img->width;
@@ -35,7 +37,7 @@ Image* Crop(Image* img, int width, int height)
 	return img_return;
 }
 
-
+//серый фильтр через формулу и приведение
 Image* Grey(Image* img)
 {
 	int width = img->width;
@@ -57,7 +59,7 @@ Image* Grey(Image* img)
 	return img;
 }
 
-
+//фильтр негров, просто 255 - число
 Image* Negro(Image* img)
 {
 	int width = img->width;
@@ -77,7 +79,7 @@ Image* Negro(Image* img)
 	return img;
 }
 
-
+//создание шарп ядра + его применение
 Image* Sharp(Image* img)
 {
 	Core* sharp_core = create_sharp_x_core();
@@ -85,7 +87,7 @@ Image* Sharp(Image* img)
 	return img_return;
 }
 
-
+//серим одну картинку, применяем едже кор, сравниваем значение пикселя с параметром на 255 чтобы сравнивать с нулем = ура победа
 Image* Edge(Image* img, float threshold)
 {
 	int height = img->height;
@@ -115,8 +117,8 @@ Image* Edge(Image* img, float threshold)
 	return img_return;
 }
 
-
-Image* Median(Image* img, int window) {				//медианный фильтр
+//медианный фильтр
+Image* Median(Image* img, int window) {
 	if (window % 2 == 0 || window <= 0) return NULL;
 	if (img == NULL) return NULL;
 	int width = img->width;
@@ -192,7 +194,7 @@ free(mat_b);
 	return result;
 }
 
-
+//создали матрицу гаусса, применили
 Image* Gaussian_Blur(Image* img, float sigma)
 {
 	Core* gauss_core = create_gauss_x_core(sigma);
