@@ -35,5 +35,5 @@ int** create_matrix(int n);
 void sort_matrix(int **matrix, int n);
 bool is_valid_number(const char *str);
 float string_to_float(const char *str);
-
+int is_valid_integer(const char *str);
 #endif //LABA3_FUNCTIONS_H

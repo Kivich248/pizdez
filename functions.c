@@ -685,3 +685,33 @@ float string_to_float(const char *str)
 
 	return negative ? -result : result;
 }
+
+
+
+int is_valid_integer(const char *str) {         //реально интеджер ввели?
+    if (str == NULL || *str == '\0') {
+        return 0;
+    }
+    
+    char *endptr;
+    long val = strtol(str, &endptr, 10);
+    
+    // Проверяем, что преобразовано полностью и нет дробной части
+    if (*endptr != '\0' || endptr == str) {
+        return 0;
+    }
+    
+    // Проверяем диапазон для int
+    if (val < INT_MIN || val > INT_MAX) {
+        return 0;
+    }
+    
+    // Дополнительная проверка на точку/запятую
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '.' || str[i] == ',') {
+            return 0;
+        }
+    }
+    
+    return 1;
+}

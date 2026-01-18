@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     int i = 3;
     while (i < argc)
     {
-        if (strcmp(argv[i], "-crop") == 0 && argc > i+1 && is_valid_number(argv[i+1]) && is_valid_number(argv[i+2]))
+        if (strcmp(argv[i], "-crop") == 0 && argc > i+1 && is_valid_integer(argv[i+1]) && is_valid_integer(argv[i+2]))
         {
             int w = atoi(argv[i+1]);
             int h = atoi(argv[i+2]);
@@ -82,10 +82,10 @@ int main(int argc, char *argv[])
         {
             float threshold = string_to_float(argv[i+1]);
             img_got = Edge(img, threshold);
-            i = i + 1;
+            i = i + 2;
             continue;
         }
-        if (strcmp(argv[i], "-med") == 0 && argc > i && is_valid_number(argv[i+1]))
+        if (strcmp(argv[i], "-med") == 0 && argc > i && is_valid_integer(argv[i+1]))
         {
             int window = atoi(argv[i+1]);
             img_got = Median(img, window);
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
             i = i + 2;
             continue;
         }
-        if (strcmp(argv[i], "-pixelate") == 0 && argc > i && is_valid_number(argv[i+1]))
+        if (strcmp(argv[i], "-pixelate") == 0 && argc > i && is_valid_integer(argv[i+1]))
         {
             int block_size = atoi(argv[i+1]);
             if (block_size < 2)
